@@ -52,6 +52,7 @@ dependencies:
   http:
   json_serializable: ^6.0.1
   flutter_secure_storage: ^4.2.1
+  datadog_flutter: ^1.4.0 # used for logging detailed errors and data
 
 dev_dependencies:
   flutter_test:
