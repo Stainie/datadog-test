@@ -19,9 +19,12 @@ class _UserViewState extends State<UserView> {
         viewModelBuilder: () => UserViewModel(),
         builder: (context, model, child) => Scaffold(
               body: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[_TextInput(), _CurrentUsername()],
+                  child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[_TextInput(), _CurrentUsername()],
+                ),
               )),
               floatingActionButton: FloatingActionButton(
                   child: model.isBusy

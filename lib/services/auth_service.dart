@@ -25,7 +25,7 @@ class AuthenticationService extends BaseService<User> {
         onSuccess: (response) {
       bool authenticated = response.data['authenticated'];
       userModel.authenticated = authenticated;
-      appStateService.setState({APP_STATE_KEYS.USER: userModel});
+      setRxModelValue(userModel);
       return authenticated;
     });
   }

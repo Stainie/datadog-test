@@ -35,8 +35,8 @@ class ApiService {
     connectTimeout: 10000,
     receiveTimeout: 10000,
   ))
-    // ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true))
-    ..interceptors.add(RetryInterceptor());
+    ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+  // ..interceptors.add(RetryInterceptor());
 
   Future<ApiResult<T>> request<T>(
     String path,
