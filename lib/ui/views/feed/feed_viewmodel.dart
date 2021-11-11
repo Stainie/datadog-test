@@ -51,7 +51,7 @@ class FeedViewModel extends FutureViewModel {
   }
 
   void navigateToEntry(int id) {
-    _navigator.navigateTo(Routes.feedView, arguments: feed[id]);
+    // _navigator.navigateTo(Routes.feedView, arguments: feed[id]);
   }
 
   @override

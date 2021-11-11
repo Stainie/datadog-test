@@ -27,7 +27,7 @@ class UserViewModel extends BaseViewModel {
           _navigator.navigateTo(Routes.feedView);
         }
       }, error: (error) {
-        setError(true);
+        setError(error.error);
       });
   }
 }

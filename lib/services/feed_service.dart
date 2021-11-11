@@ -1,5 +1,6 @@
 import 'package:flutter_template/models/feed.dart';
 import 'package:flutter_template/models/network/api_result.dart';
+import 'package:flutter_template/state/api_urls.dart';
 import 'package:stacked/stacked.dart';
 
 import '../app/locator.dart';
@@ -39,8 +40,7 @@ class FeedService extends BaseServiceList<Feed> with ReactiveServiceMixin {
   final ApiService _api = locator<ApiService>();
 
   Future<ApiResult<void>> retrieveFeedList(int? id) async =>
-      _api.request("feed/$id", HttpMethod.get, token: 'token',
-          onSuccess: (response) {
-        rxAdd(FeedCollection.fromJson(response.data));
+      _api.request(feed, HttpMethod.get, token: 'token', onSuccess: (response) {
+        rxAdd(FeedCollection.fromJson(response.data["feed"]));
       });
 }

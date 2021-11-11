@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_template/models/network/api_result.dart';
+import 'package:flutter_template/state/api_urls.dart';
 
 import '../app/locator.dart';
 import '../models/user.dart';
@@ -20,7 +21,7 @@ class AuthenticationService extends BaseService<User> {
     User userModel = User(username: text, id: 1);
 
     var body = jsonEncode(userModel.toJson());
-    return await _api.request("authenticate", HttpMethod.post, data: body,
+    return await _api.request(authenticate, HttpMethod.post, data: body,
         onSuccess: (response) {
       bool authenticated = response.data['authenticated'];
       userModel.authenticated = authenticated;

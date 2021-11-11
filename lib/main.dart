@@ -20,12 +20,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await DatadogFlutter.initialize(
-      environment: 'production',
-      androidRumApplicationId: '',
-      iosRumApplicationId: '',
-      clientToken: '',
+      environment: 'development',
+      clientToken: 'pub7cdaf950812e5fb5f6d0ccc9276a7b5d',
+      androidRumApplicationId: '7f592869-4679-4b39-ae8a-42f99ba50661',
+      iosRumApplicationId: 'd75c1e64-1617-4971-bd28-51e1059fb428',
       trackingConsent: TrackingConsent.granted,
-      serviceName: '');
+      serviceName: 'test_app');
 
   await DatadogTracing.initialize();
 
@@ -34,16 +34,27 @@ void main() async {
 
   setUpLocator();
 
-  // Init AppStateService
-  AppStateService appStateService = locator<AppStateService>();
-  RouteObserver<PageRoute> routeObserver =
-      appStateService.getAppVars().vars[APP_VARS_KEYS.ROUTE_OBSERVER];
-
-  String preferredLanguage = locator<UserPrefs>().preferredLanguage;
-
   // Catch the errors without crashing the app
   runZonedGuarded(() {
-    runApp(MaterialApp(
+    runApp(ErrorHandlingApp());
+  }, (error, stackTrace) {
+    DatadogRum.instance.addError(error, stackTrace);
+  });
+  runApp(ErrorHandlingApp());
+}
+
+class ErrorHandlingApp extends StatelessWidget {
+  const ErrorHandlingApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Init AppStateService
+    AppStateService appStateService = locator<AppStateService>();
+    RouteObserver<PageRoute> routeObserver =
+        appStateService.getAppVars().vars[APP_VARS_KEYS.ROUTE_OBSERVER];
+
+    String preferredLanguage = locator<UserPrefs>().preferredLanguage;
+    return MaterialApp(
       title: 'Flutter Template',
       theme: ThemeData(),
       onGenerateRoute: StackedRouter().onGenerateRoute,
@@ -79,8 +90,6 @@ void main() async {
 
         return DEFAULT_LOCALE;
       },
-    ));
-  }, (error, stackTrace) {
-    DatadogRum.instance.addError(error, stackTrace);
-  });
+    );
+  }
 }

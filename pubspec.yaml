@@ -50,7 +50,8 @@ dependencies:
   connectivity: ^3.0.6
   dio: ^4.0.0 # used for handling http requests alongside complete error handling
   http:
-  json_serializable: ^6.0.1
+  json_serializable: ^6.0.0
+  json_annotation: ^4.3.0
   flutter_secure_storage: ^4.2.1
   datadog_flutter: ^1.4.0 # used for logging detailed errors and data
 

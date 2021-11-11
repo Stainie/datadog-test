@@ -26,7 +26,7 @@ class _UserViewState extends State<UserView> {
               floatingActionButton: FloatingActionButton(
                   child: model.isBusy
                       ? CircularProgressIndicator()
-                      : Text("button"),
+                      : Text("log in"),
                   onPressed: () async {
                     await model.authenticateUser();
                   }),
@@ -59,6 +59,11 @@ class _CurrentUsername extends HookViewModelWidget<UserViewModel> {
 
   @override
   Widget buildViewModelWidget(BuildContext context, UserViewModel viewModel) {
-    return Text(viewModel.username);
+    return viewModel.hasError
+        ? Text(
+            "${viewModel.error}",
+            style: TextStyle(color: Colors.red),
+          )
+        : Text(viewModel.username);
   }
 }

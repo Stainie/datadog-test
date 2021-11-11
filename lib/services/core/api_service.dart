@@ -35,7 +35,7 @@ class ApiService {
     connectTimeout: 10000,
     receiveTimeout: 10000,
   ))
-    ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true))
+    // ..interceptors.add(LogInterceptor(requestBody: true, responseBody: true))
     ..interceptors.add(RetryInterceptor());
 
   Future<ApiResult<T>> request<T>(
@@ -67,31 +67,26 @@ class ApiService {
           .stopResourceLoading(path, statusCode: response.statusCode);
       return ApiResult<T>.success(onSuccess(response));
     } on DioError catch (e) {
-      print('[API] Http error! Error: ${e.type}');
-      print('[API] Proceeding to parse Http error.');
       try {
         final Map<String, dynamic> errorData =
             e.response?.data as Map<String, dynamic>;
         final ApiError error = ApiError.fromJson(errorData);
-        print('[API] Parsed Http error!');
-        DatadogRum.instance
-            .stopResourceLoading(path, statusCode: error.statusCode);
+        DatadogRum.instance.stopResourceLoading(path,
+            statusCode: error.statusCode, errorMessage: error.error);
         return ApiResult<T>.error(
             error.copyWith(statusCode: e.response!.statusCode!));
       } catch (e) {
-        print('[API] Failed parsing Http Error! Rethrowing!');
         const ApiError error =
             ApiError('Unsuccessfully tried parsing error message.', 520);
-        DatadogRum.instance
-            .stopResourceLoading(path, statusCode: error.statusCode);
+        DatadogRum.instance.stopResourceLoading(path,
+            statusCode: error.statusCode, errorMessage: error.error);
 
         return ApiResult<T>.error(error);
       }
     } catch (e) {
-      print('[API] General error: $e');
       const ApiError error = ApiError('An unspecified error occurred.', 520);
-      DatadogRum.instance
-          .stopResourceLoading(path, statusCode: error.statusCode);
+      DatadogRum.instance.stopResourceLoading(path,
+          statusCode: error.statusCode, errorMessage: error.error);
 
       return ApiResult<T>.error(error);
     }
